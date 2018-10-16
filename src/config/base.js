@@ -9,8 +9,8 @@ const config = {
   storageBucket: "pi-autobox.appspot.com",
   messagingSenderId: "496501809190"
 };
-firebase.initializeApp(config);
+const app = firebase.initializeApp(config);
 
-const db = Rebase.createClass(firebase.database());
+const db = Rebase.createClass(app.database());
 
 export { db };

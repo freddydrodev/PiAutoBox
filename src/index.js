@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { View, Text } from "native-base";
+import { StyleSheet } from "react-native";
+import { View } from "native-base";
 import { Font, AppLoading, Asset } from "expo";
 import { Feather } from "@expo/vector-icons";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducers from "./reducers";
+import MainFlow from "./routes/";
 
 const store = createStore(reducers);
 class MainProcess extends Component {
@@ -24,17 +26,20 @@ class MainProcess extends Component {
       }
     });
 
-  async componentDidMount() {
+  componentDidMount() {
     console.log(`[Mounted]`);
   }
 
   _loadAssets = async () => {
     const fontAssets = this._loadfonts(
+      { MyIcon: require("../assets/Icons/fonts/piAutoBox.ttf") },
       { Roboto: require("native-base/Fonts/Roboto.ttf") },
       { Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf") },
-      { krub: require("../assets/Fonts/Krub/Krub-Regular.ttf") },
-      { krub_light: require("../assets/Fonts/Krub/Krub-Light.ttf") },
-      { krub_bold: require("../assets/Fonts/Krub/Krub-Bold.ttf") },
+      { font_light: require("../assets/Fonts/Raleway/Raleway-Light.ttf") },
+      { font: require("../assets/Fonts/Raleway/Raleway-Regular.ttf") },
+      { font_medium: require("../assets/Fonts/Raleway/Raleway-Medium.ttf") },
+      { font_bold: require("../assets/Fonts/Raleway/Raleway-Bold.ttf") },
+      { font_black: require("../assets/Fonts/Raleway/Raleway-Black.ttf") },
       Feather.font
     );
 
@@ -65,13 +70,20 @@ class MainProcess extends Component {
     } else {
       return (
         <Provider store={store}>
-          <View>
-            <Text style={{ fontFamily: "krub" }}>MainProcess</Text>
+          <View style={styles.mainProcessStyle}>
+            <MainFlow />
           </View>
         </Provider>
       );
     }
   }
 }
+
+const styles = StyleSheet.create({
+  mainProcessStyle: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "red"
+  }
+});
 
 export default MainProcess;

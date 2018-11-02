@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Dimensions, ImageBackground } from "react-native";
 import { View, Text, Grid, Row, Col, Button, Icon } from "native-base";
+import { Constants } from "expo";
 import Carousel from "react-native-snap-carousel";
 import {
   IMG_1,
@@ -58,7 +59,6 @@ class Publicity extends Component {
             size={4}
             style={{
               paddingHorizontal: 20,
-              paddingVertical: 10,
               flexDirection: "row-reverse",
               width: null,
               flex: 1
@@ -69,7 +69,7 @@ class Publicity extends Component {
                 alignItems: "center",
                 width: null,
                 flex: 1,
-                paddingVertical: 10
+                paddingVertical: Constants.statusBarHeight + 10
               }}
             >
               <Button light small iconLeft rounded>

@@ -1,76 +1,95 @@
 import React, { Component } from "react";
-import { View, Text, Tabs, Tab, ScrollableTab } from "native-base";
-import { MapView } from "expo";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Toast } from "native-base";
+import { MapView, Permissions, Location, Constants } from "expo";
 import StationMarker from "../components/maps/StationMarker";
 import mapStyle from "../config/mapStyle.json";
-const { Marker } = MapView;
+import { rnSetPosition, TEXT_COLOR, LIGHT_TEXT_COLOR } from "../tools";
 
 class Services extends Component {
   state = {
-    initialRegion: {
-      latitude: this.round(5.5756173, 3),
-      longitude: this.round(-0.2555073, 3),
-      latitudeFinal: this.round(5.5756173 - 0.01, 3),
-      longitudeFinal: this.round(-0.2555073 - 0.01, 3)
-    }
+    location: null,
+    errorMessage: null
   };
 
-  initialRegion = () => ({
-    ...this.getRegionForCoordinates([
-      {
-        latitude: 5.5756173,
-        longitude: -0.2555073
-      },
-      {
-        latitude: latitudeFinal,
-        longitude: longitudeFinal
-      }
-    ])
-  });
-
-  round(value, decimals) {
-    return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
-  }
   render() {
-    const {
-      latitude,
-      longitude,
-      latitudeFinal,
-      longitudeFinal
-    } = this.state.initialRegion;
+    const { location } = this.state;
+    const { map, container } = styles;
 
-    console.log(this.state.initialRegion);
-    console.log(
-      this.getRegionForCoordinates([
-        {
-          latitude: 5.5756173,
-          longitude: -0.2555073
-        },
-        {
-          latitude: latitudeFinal,
-          longitude: longitudeFinal
-        }
-      ])
+    return location ? (
+      <View style={{ flex: 1 }}>
+        <MapView
+          showsUserLocation
+          followsUserLocation
+          showsMyLocationButton
+          initialRegion={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+            latitudeDelta: 0.006,
+            longitudeDelta: 0.006
+          }}
+          onPress={loc => alert("ok")}
+          style={{ flex: 1 }}
+          customMapStyle={mapStyle}
+        />
+      </View>
+    ) : (
+      <View style={{ flex: 1, ...rnSetPosition() }}>
+        <TouchableOpacity
+          light
+          rounded
+          small
+          style={{
+            marginTop: 20,
+            backgroundColor: "#ededed",
+            padding: 10,
+            borderRadius: 5
+          }}
+          onPress={this._getLocationAsync}
+        >
+          <Text
+            style={{
+              fontFamily: "font",
+              fontSize: 20,
+              color: LIGHT_TEXT_COLOR
+            }}
+          >
+            Actualiser Carte
+          </Text>
+        </TouchableOpacity>
+      </View>
     );
+  }
 
-    return (
-      <MapView
-        showsUserLocation
-        followsUserLocation
-        showsMyLocationButton
-        onPress={loc => alert("ok")}
-        style={{ flex: 1 }}
-        customMapStyle={mapStyle}
-      >
-        {/* <Marker
-              coordinate={{ latitude, longitude }}
-              title="string"
-              description="ici"
-            >
-              <StationMarker />
-            </Marker> */}
-      </MapView>
-    );
+  _getLocationAsync = async () => {
+    Toast.show({
+      text: "Chargement de google maps!",
+      buttonText: "Okay",
+      duration: 5000,
+      position: "bottom"
+    });
+
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== "granted") {
+      console.log("not granted");
+    }
+
+    console.log("step g");
+
+    const location = await Location.getCurrentPositionAsync({
+      enableHighAccuracy: true
+    }).then(({ coords }) => ({
+      longitude: coords.longitude,
+      latitude: coords.latitude
+    }));
+
+    console.log("step loc");
+
+    this.setState({ location });
+  };
+
+  componentDidMount() {
+    this._getLocationAsync();
   }
 
   getRegionForCoordinates(points) {
@@ -108,3 +127,22 @@ class Services extends Component {
 }
 
 export default Services;
+
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "flex-end",
+    alignItems: "center"
+  },
+  map: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
+  }
+});

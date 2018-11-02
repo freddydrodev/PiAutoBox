@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { MapView } from "expo";
 import {
   PRIMARY_COLOR,
   rnSquare,
@@ -9,16 +9,23 @@ import {
 } from "../../tools";
 import MyIcon from "../common/MyIcon";
 
-class StationMarker extends Component {
-  render() {
-    const { markerStyle, markerInnerStyle } = styles;
-    return (
+const { Marker } = MapView;
+
+const StationMarker = ({ latitude, longitude }) => {
+  const { markerStyle } = styles;
+
+  return (
+    <Marker
+      coordinate={{ latitude, longitude }}
+      title="string"
+      description="ici"
+    >
       <View style={markerStyle}>
         <MyIcon name="filling-station" size={16} color={TEXT_COLOR} />
       </View>
-    );
-  }
-}
+    </Marker>
+  );
+};
 
 export default StationMarker;
 
@@ -31,8 +38,5 @@ const styles = StyleSheet.create({
     backgroundColor: PRIMARY_COLOR,
     padding: 5,
     ...rnSetPosition()
-  },
-  markerInnerStyle: {
-    flex: 1
   }
 });

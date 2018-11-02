@@ -45,26 +45,26 @@ class Services extends Component {
               sm={6}
               style={{ paddingRight: 20, paddingBottom: 20 }}
             >
-              <TouchableOpacity>
-                <View
-                  style={{
-                    borderTopLeftRadius: index == 0 ? 30 : 10,
-                    borderTopRightRadius: index == 1 ? 30 : 10,
-                    borderBottomRightRadius: index == length - 1 ? 30 : 10,
-                    borderBottomLeftRadius:
-                      index == length - 2 && index % 2 == 0 ? 30 : 10,
-                    borderRadius: 10,
-                    backgroundColor: bgcolor,
-                    shadowColor: sdcolor,
-                    shadowOpacity: (index % 4) % 3 == 0 ? 0.3 : 0.1,
-                    shadowRadius: 5,
-                    shadowOffset: { width: 5, height: 5 },
-                    ...rnSetPosition(),
-                    ...rnFill,
-                    height: 150,
-                    elevation: 20
-                  }}
-                >
+              <View
+                style={{
+                  borderTopLeftRadius: index == 0 ? 30 : 10,
+                  borderTopRightRadius: index == 1 ? 30 : 10,
+                  borderBottomRightRadius: index == length - 1 ? 30 : 10,
+                  borderBottomLeftRadius:
+                    index == length - 2 && index % 2 == 0 ? 30 : 10,
+                  borderRadius: 10,
+                  backgroundColor: bgcolor,
+                  shadowColor: sdcolor,
+                  shadowOpacity: (index % 4) % 3 == 0 ? 0.3 : 0.1,
+                  shadowRadius: 5,
+                  shadowOffset: { width: 5, height: 5 },
+                  ...rnSetPosition(),
+                  ...rnFill,
+                  height: 150,
+                  elevation: 15
+                }}
+              >
+                <TouchableOpacity>
                   <MyIcon name={icon} size={50} color={iconColor} />
                   <Text
                     style={{
@@ -75,8 +75,8 @@ class Services extends Component {
                   >
                     {name}
                   </Text>
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
             </Col>
           );
         })}

@@ -1,13 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { Root } from "native-base";
 import MainProcess from "./src";
 import { BG_COLOR } from "./src/tools";
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
+      <Root style={styles.container}>
         <MainProcess />
-      </View>
+      </Root>
     );
   }
 }

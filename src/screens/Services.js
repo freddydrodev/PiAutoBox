@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { View, Text, Toast } from "native-base";
+import { StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import { connect } from "react-redux";
+import { View, Text, Toast, Picker } from "native-base";
 import { MapView, Permissions, Location, Constants } from "expo";
 import StationMarker from "../components/maps/StationMarker";
 import mapStyle from "../config/mapStyle.json";
-import { rnSetPosition, TEXT_COLOR, LIGHT_TEXT_COLOR } from "../tools";
+import { rnSetPosition, TEXT_COLOR, LIGHT_TEXT_COLOR, rnFill } from "../tools";
 
 class Services extends Component {
   state = {
@@ -19,9 +20,9 @@ class Services extends Component {
     return location ? (
       <View style={{ flex: 1 }}>
         <MapView
+          style={{ position: "absolute", ...rnFill, zIndex: -1 }}
           showsUserLocation
           followsUserLocation
-          showsMyLocationButton
           initialRegion={{
             latitude: location.latitude,
             longitude: location.longitude,
@@ -32,6 +33,43 @@ class Services extends Component {
           style={{ flex: 1 }}
           customMapStyle={mapStyle}
         />
+        <View
+          style={{
+            position: "absolute",
+            zIndex: 10,
+            top: Constants.statusBarHeight,
+            left: 0
+          }}
+        >
+          <View
+            style={{
+              // elevation: 15,
+              width: Dimensions.get("window").width,
+              padding: 20,
+              flex: 1,
+              borderRadius: 5
+            }}
+          >
+            <Picker
+              note
+              mode="dropdown"
+              style={{
+                flex: 1,
+                height: 50,
+                // margin: 10,
+                width: null,
+                backgroundColor: "white",
+                elevation: 15
+              }}
+            >
+              <Picker.Item label="assurance" value="assurance" />
+              <Picker.Item label="ATM Card" value="key1" />
+              <Picker.Item label="Debit Card" value="key2" />
+              <Picker.Item label="Credit Card" value="key3" />
+              <Picker.Item label="Net Banking" value="key4" />
+            </Picker>
+          </View>
+        </View>
       </View>
     ) : (
       <View style={{ flex: 1, ...rnSetPosition() }}>
@@ -126,7 +164,8 @@ class Services extends Component {
   }
 }
 
-export default Services;
+const mapStateToProps = ({ Services }) => ({ Services });
+export default connect(mapStateToProps)(Services);
 
 const styles = StyleSheet.create({
   container: {

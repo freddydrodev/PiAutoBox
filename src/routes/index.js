@@ -4,12 +4,15 @@ import {
   createSwitchNavigator,
   createStackNavigator
 } from "react-navigation";
+import { connect } from "react-redux";
 import Home from "../screens/Home.js";
 import Services from "../screens/Services.js";
 import Login from "../screens/Login.js";
 import Registration from "../screens/Registration.js";
 import { PRIMARY_COLOR, TEXT_COLOR } from "../tools/index.js";
 import Feather from "@expo/vector-icons/Feather";
+import { update_services } from "../actions/index.js";
+import { db } from "../config/base.js";
 
 //Auth flow
 const AuthFlow = createStackNavigator({
@@ -26,19 +29,19 @@ const AuthFlow = createStackNavigator({
 //Private flow
 const PrivateFlow = createBottomTabNavigator(
   {
-    services: {
-      screen: Services,
-      navigationOptions: {
-        tabBarIcon: ({ focused, horizontal, tintColor }) => (
-          <Feather name="layers" color={tintColor} size={20} />
-        )
-      }
-    },
     home: {
       screen: Home,
       navigationOptions: {
         tabBarIcon: ({ focused, horizontal, tintColor }) => (
           <Feather name="home" color={tintColor} size={20} />
+        )
+      }
+    },
+    services: {
+      screen: Services,
+      navigationOptions: {
+        tabBarIcon: ({ focused, horizontal, tintColor }) => (
+          <Feather name="layers" color={tintColor} size={20} />
         )
       }
     }
@@ -66,8 +69,23 @@ const Flows = createSwitchNavigator({
   authFlow: AuthFlow
 });
 
-export default class MainFlow extends Component {
+class MainFlow extends Component {
+  async componentDidMount() {
+    await db.listenTo("services", {
+      context: this,
+      then: services => {
+        this.props.update_services(services);
+      },
+      asArray: true,
+      onFailure: err => console.warn
+    });
+  }
   render() {
     return <Flows />;
   }
 }
+
+export default connect(
+  null,
+  { update_services }
+)(MainFlow);

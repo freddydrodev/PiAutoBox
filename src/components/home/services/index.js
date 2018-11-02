@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { H1 } from "native-base";
 import { Column as Col, Row } from "react-native-flexbox-grid";
+import { connect } from "react-redux";
 import { db } from "../../../config/base.js";
 import {
   TEXT_COLOR,
@@ -14,21 +15,8 @@ import {
 } from "../../../tools";
 import MyIcon from "../../common/MyIcon.js";
 class Services extends Component {
-  state = {
-    services: null
-  };
-
-  async componentDidMount() {
-    await db.bindToState("services", {
-      context: this,
-      state: "services",
-      asArray: true,
-      onFailure: err => console.warn
-    });
-  }
-
   displayServices = () => {
-    const { services } = this.state;
+    const { services } = this.props;
     const { length } = services;
 
     return (
@@ -64,7 +52,7 @@ class Services extends Component {
                   elevation: 15
                 }}
               >
-                <TouchableOpacity>
+                <TouchableOpacity style={{ ...rnSetPosition() }}>
                   <MyIcon name={icon} size={50} color={iconColor} />
                   <Text
                     style={{
@@ -83,6 +71,7 @@ class Services extends Component {
       </Row>
     );
   };
+
   render() {
     return (
       <View>
@@ -91,10 +80,12 @@ class Services extends Component {
         >
           Que recherchez-vous?
         </H1>
-        {this.state.services && this.displayServices()}
+        {this.props.services && this.displayServices()}
       </View>
     );
   }
 }
 
-export default Services;
+const mapStateToProps = ({ services }) => ({ services });
+
+export default connect(mapStateToProps)(Services);

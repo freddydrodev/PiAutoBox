@@ -1,5 +1,12 @@
 import { combineReducers } from "redux";
 
 export default combineReducers({
-  services: () => []
+  services: (state = [], action) => {
+    switch (action.type) {
+      case "update_services":
+        return action.services;
+      default:
+        return state;
+    }
+  }
 });

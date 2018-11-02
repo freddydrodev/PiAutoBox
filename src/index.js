@@ -34,12 +34,11 @@ class MainProcess extends Component {
     if (status == "granted") {
       console.log("granted");
     }
-    console.log(`[Mounted]`);
   }
 
   _loadAssets = async () => {
     const fontAssets = this._loadfonts(
-      { MyIcon: require("../assets/Icons/fonts/piAutoBox.ttf") },
+      { MyIcon: require("../assets/Icons/fonts/piautobox.ttf") },
       { Roboto: require("native-base/Fonts/Roboto.ttf") },
       { Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf") },
       { font_light: require("../assets/Fonts/Raleway/Raleway-Light.ttf") },

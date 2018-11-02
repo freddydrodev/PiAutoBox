@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { View } from "native-base";
-import { Font, AppLoading, Asset } from "expo";
+import { Font, AppLoading, Asset, Permissions } from "expo";
 import { Feather } from "@expo/vector-icons";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducers from "./reducers";
 import MainFlow from "./routes/";
+import { BG_COLOR } from "./tools";
+// J9ZJXLJMGZ;
 
 const store = createStore(reducers);
+
 class MainProcess extends Component {
   state = {
     isReady: false,
@@ -26,7 +29,11 @@ class MainProcess extends Component {
       }
     });
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status == "granted") {
+      console.log("granted");
+    }
     console.log(`[Mounted]`);
   }
 
@@ -82,7 +89,7 @@ class MainProcess extends Component {
 const styles = StyleSheet.create({
   mainProcessStyle: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "red"
+    backgroundColor: BG_COLOR
   }
 });
 

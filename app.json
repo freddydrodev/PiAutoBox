@@ -6,7 +6,9 @@
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": ["ios", "android"],
-    "android": { "package": "com.frediustcdev.PiAutoBox" },
+    "android": {
+      "package": "com.river.piAutobox"
+    },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,6 +22,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "com.river.piAutobox",
       "supportsTablet": true
     }
   }

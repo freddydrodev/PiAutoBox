@@ -8,11 +8,14 @@ import Home from "../screens/Home.js";
 import Services from "../screens/Services.js";
 import Login from "../screens/Login.js";
 import Registration from "../screens/Registration.js";
+import { PRIMARY_COLOR, TEXT_COLOR } from "../tools/index.js";
+import Feather from "@expo/vector-icons/Feather";
 
 //Auth flow
 const AuthFlow = createStackNavigator({
   login: {
-    screen: Login
+    screen: Login,
+    navigationOptions: {}
   },
   registration: {
     screen: Registration
@@ -21,15 +24,42 @@ const AuthFlow = createStackNavigator({
 //Public flow
 
 //Private flow
-const PrivateFlow = createBottomTabNavigator({
-  home: {
-    screen: Home
+const PrivateFlow = createBottomTabNavigator(
+  {
+    services: {
+      screen: Services,
+      navigationOptions: {
+        tabBarIcon: ({ focused, horizontal, tintColor }) => (
+          <Feather name="layers" color={tintColor} size={20} />
+        )
+      }
+    },
+    home: {
+      screen: Home,
+      navigationOptions: {
+        tabBarIcon: ({ focused, horizontal, tintColor }) => (
+          <Feather name="home" color={tintColor} size={20} />
+        )
+      }
+    }
   },
-  services: {
-    screen: Services,
-    navigationOptions: {}
+  {
+    backBehavior: "initialRoute",
+    tabBarOptions: {
+      activeTintColor: TEXT_COLOR,
+      inactiveTintColor: "white",
+      activeBackgroundColor: PRIMARY_COLOR,
+      inactiveBackgroundColor: PRIMARY_COLOR,
+      labelStyle: {
+        fontFamily: "font"
+      },
+      style: {
+        borderTopWidth: 0,
+        elevation: 20
+      }
+    }
   }
-});
+);
 //Main flow
 const Flows = createSwitchNavigator({
   privateFlow: PrivateFlow,

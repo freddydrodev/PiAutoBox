@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { View } from "native-base";
 import { Font, AppLoading, Asset, Permissions } from "expo";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Ionicons, AntDesign } from "@expo/vector-icons";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducers from "./reducers";
@@ -46,7 +46,9 @@ class MainProcess extends Component {
       { font_medium: require("../assets/Fonts/Raleway/Raleway-Medium.ttf") },
       { font_bold: require("../assets/Fonts/Raleway/Raleway-Bold.ttf") },
       { font_black: require("../assets/Fonts/Raleway/Raleway-Black.ttf") },
-      Feather.font
+      Feather.font,
+      Ionicons.font,
+      AntDesign.font
     );
 
     const imgAssets = this._loadImages(

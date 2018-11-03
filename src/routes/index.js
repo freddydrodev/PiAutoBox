@@ -11,8 +11,9 @@ import Login from "../screens/Login.js";
 import Registration from "../screens/Registration.js";
 import { PRIMARY_COLOR, TEXT_COLOR } from "../tools/index.js";
 import Feather from "@expo/vector-icons/Feather";
-import { update_services } from "../actions/index.js";
+import { updateServices, selectService } from "../actions/index.js";
 import { db } from "../config/base.js";
+import { Text } from "native-base";
 
 //Auth flow
 const AuthFlow = createStackNavigator({
@@ -29,19 +30,19 @@ const AuthFlow = createStackNavigator({
 //Private flow
 const PrivateFlow = createBottomTabNavigator(
   {
-    home: {
-      screen: Home,
-      navigationOptions: {
-        tabBarIcon: ({ focused, horizontal, tintColor }) => (
-          <Feather name="home" color={tintColor} size={20} />
-        )
-      }
-    },
     services: {
       screen: Services,
       navigationOptions: {
         tabBarIcon: ({ focused, horizontal, tintColor }) => (
           <Feather name="layers" color={tintColor} size={20} />
+        )
+      }
+    },
+    home: {
+      screen: Home,
+      navigationOptions: {
+        tabBarIcon: ({ focused, horizontal, tintColor }) => (
+          <Feather name="home" color={tintColor} size={20} />
         )
       }
     }
@@ -70,22 +71,29 @@ const Flows = createSwitchNavigator({
 });
 
 class MainFlow extends Component {
+  state = {
+    isReady: false
+  };
+
   async componentDidMount() {
     await db.listenTo("services", {
       context: this,
       then: services => {
-        this.props.update_services(services);
+        this.props.selectService(services[0].key);
+        this.props.updateServices(services);
       },
       asArray: true,
       onFailure: err => console.warn
     });
+
+    this.setState({ isReady: true });
   }
   render() {
-    return <Flows />;
+    return this.state.isReady ? <Flows /> : <Text>okok</Text>;
   }
 }
 
 export default connect(
   null,
-  { update_services }
+  { updateServices, selectService }
 )(MainFlow);

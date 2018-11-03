@@ -1,0 +1,2 @@
+export const SELECT_SERVICE = "SELECT_SERVICE";
+export const UPDATE_SERVICE = "UPDATE_SERVICE";

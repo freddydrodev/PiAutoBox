@@ -32,12 +32,12 @@ class Services extends Component {
   }
 
   _getLocationAsync = async () => {
-    // Toast.show({
-    //   text: "Chargement de google maps!",
-    //   buttonText: "Okay",
-    //   duration: 5000,
-    //   position: "bottom"
-    // });
+    Toast.show({
+      text: "Chargement de google maps!",
+      buttonText: "Okay",
+      duration: 5000,
+      position: "bottom"
+    });
 
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== "granted") {
